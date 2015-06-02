@@ -2,7 +2,15 @@
 kind: PXELinux
 name: WAIK default PXELinux
 %>
-DEFAULT winPE
 
-LABEL winPE
-    KERNEL /Boot/startrom.0
+DEFAULT menu
+PROMPT 0
+MENU TITLE PXE Menu
+TIMEOUT 200
+TOTALTIMEOUT 6000
+ONTIMEOUT local
+
+LABEL menu
+     MENU LABEL Wimboot via pxelinux
+     COM32 linux.c32 <%= @kernel %>
+     APPEND initrdfile=<%= @initrd %>,<%= @host.operatingsystem.bootfile(@host.arch,:bcd) %>,<%= @host.operatingsystem.bootfile(@host.arch,:bootsdi) %>,<%= @host.operatingsystem.bootfile(@host.arch,:bootwim) %>
